@@ -20,10 +20,10 @@ for ss in scenarios:
         t0, t1 = scen_0, scen_1
     flist = []
     for mm in models:
-        memfile = f'{mm}/{mm}_rx1day_{ss}_{t0}_{t1}_mean.nc'
+        memfile = f'{mm}/{mm}_rx1day_{ss}_{t0}_{t1}_ann.nc'
         flist.append(memfile)
     fstr = ' '.join(flist)
-    outfile = f'ens_{ss}_rx1day_{t0}_{t1}.nc'
+    outfile = f'ens_{ss}_rx1day_{t0}_{t1}_ann.nc'
     cmd = f'ncea {fstr} {outfile}'
     print(cmd)
     os.system(cmd)

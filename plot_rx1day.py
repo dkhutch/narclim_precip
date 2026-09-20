@@ -36,64 +36,32 @@ f = nc.Dataset(ssp370file,'r')
 pr_370 = f.variables['pr_rx1day'][:] * 86400.
 f.close()
 
-# pr_126 = (pr_126 - pr_hist) / pr_hist * 100
-# pr_245 = (pr_245 - pr_hist) / pr_hist * 100
-# pr_370 = (pr_370 - pr_hist) / pr_hist * 100
-
-pr_126 = (pr_126 - pr_hist) 
-pr_245 = (pr_245 - pr_hist) 
-pr_370 = (pr_370 - pr_hist) 
-
-
-pr_126 = np.squeeze(pr_126)
-pr_245 = np.squeeze(pr_245)
-pr_370 = np.squeeze(pr_370)
-
-# nsw.boundary.plot(linewidth=1, color='black')
+pr_hist = np.squeeze(pr_hist)
 
 xlims = [140, 154]
 ylims = [-38, -28]
 
-fig = plt.figure(figsize=(12,6))
-gs = fig.add_gridspec(1,3)
-(ax1, ax2, ax3) = gs.subplots()
+fig = plt.figure(figsize=(8,6))
+gs = fig.add_gridspec(1,1)
+ax1 = gs.subplots()
 
-
-levs = np.arange(-30, 31, 5)
+levs = np.arange(20, 121, 10)
 
 nsw.boundary.plot(ax=ax1, linewidth=1, color='black')
-h=ax1.contourf(lon, lat, pr_126, levs, cmap=cmaps.MPL_BrBG, extend='both')
-ax1.set_title('Low emissions')
+h=ax1.contourf(lon, lat, pr_hist, levs, cmap=cmaps.BlGrYeOrReVi200_r, extend='max')
+ax1.set_title('Historical baseline Rx1day 1991-2010')
 # ax1.set_colorbar()
 ax1.set_xlim(xlims)
 ax1.set_ylim(ylims)
 ax1.set_ylabel('Latitude (' + u'\xb0' + 'N)')
-
 ax1.set_xlabel('Longitude (' + u'\xb0' + 'E)')
 
-nsw.boundary.plot(ax=ax2, linewidth=1, color='black')
-ax2.contourf(lon, lat, pr_245, levs, cmap=cmaps.MPL_BrBG, extend='both')
-ax2.set_title('Medium emissions')
-# ax2.set_colorbar()
-ax2.set_xlim(xlims)
-ax2.set_ylim(ylims)
 
-ax2.set_xlabel('Longitude (' + u'\xb0' + 'E)')
-
-nsw.boundary.plot(ax=ax3, linewidth=1, color='black')
-ax3.contourf(lon, lat, pr_370, levs, cmap=cmaps.MPL_BrBG, extend='both')
-ax3.set_title('High emissions')
-# ax3.set_colorbar()
-ax3.set_xlim(xlims)
-ax3.set_ylim(ylims)
-
-ax3.set_xlabel('Longitude (' + u'\xb0' + 'E)')
-
-plt.subplots_adjust(bottom=0.2, top=0.95, left=0.08, right=0.95)
+plt.subplots_adjust(bottom=0.3, top=0.95, left=0.08, right=0.95)
 
 # tuple (left, bottom, width, height)
-cbar_ax = fig.add_axes([0.2, 0.2, 0.62, 0.04])
-fig.colorbar(h, cax=cbar_ax, orientation='horizontal', label='change in Rx1day extreme rain (mm/day)')
+cbar_ax = fig.add_axes([0.25, 0.15, 0.55, 0.04])
+fig.colorbar(h, cax=cbar_ax, orientation='horizontal', label='Annual extreme rain Rx1day (mm/day)')
 
-plt.savefig('future.pdf')
+plt.savefig('hist.pdf', dpi=500)
 plt.close('all')
